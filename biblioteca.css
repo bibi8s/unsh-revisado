@@ -1,0 +1,431 @@
+/* =====================================================================
+   Unsheltered — Biblioteca (versão 7) · CSS-base
+
+   Como personalizar:
+   1. Cores, fontes e tamanhos gerais: mude as variáveis logo abaixo.
+   2. Uma parte específica: cada elemento tem a sua própria classe
+      (todas começam com "bib-"). Procure pelo nome neste arquivo.
+   3. Uma mesa específica: use o atributo data-mesa, por exemplo
+      .bib-pessoa[data-mesa="corredor"] { ... }
+      A cor de cada mesa (definida no painel) chega como --bib-mesa-cor.
+   4. Andar atual: #bibliobx1[data-andar-atual="2"] { ... }
+
+   O JavaScript não aplica nenhum estilo. Só passa estas variáveis:
+   --bib-mesa-cor, --bib-progresso (0–100%), e no andar inferior
+   --bib-x, --bib-y, --bib-largura, --bib-altura.
+   ===================================================================== */
+
+#bibliobx1 {
+  /* ---------- Cores ---------- */
+  --bib-fundo-imagem: url(https://i.imgur.com/Y30aMOY.jpeg);
+  --bib-fundo-cor: #272727bd;
+  --bib-painel: rgba(0, 0, 0, 0.45);          /* barra superior e lateral */
+  --bib-caixa: rgba(0, 0, 0, 0.85);           /* janelas (modais) */
+  --bib-texto: #e9e4ee;
+  --bib-texto-suave: #8a8291;
+  --bib-linha: #262626;
+  --bib-borda: #474747;
+  --bib-destaque: var(--accent1, #7b3fb0);    /* roxo do fórum */
+  --bib-dourado: #c9a84c;
+  --bib-dourado-claro: #cfb674;
+  --bib-perigo: #c06060;
+  --bib-sucesso: #5a8f6a;
+
+  /* ---------- Fontes ---------- */
+  --bib-fonte-titulo: 'against', serif;
+  --bib-fonte-nome: 'Mosca', serif;
+  --bib-fonte-texto: 'Poppins', sans-serif;
+  --bib-fonte-numeros: 'IBM Plex Mono', monospace;
+
+  /* ---------- Medidas ---------- */
+  --bib-altura: 615px;
+  --bib-largura-lateral: 26%;
+  --bib-espaco: 20px;
+}
+
+/* =====================================================================
+   Caixa principal
+   ===================================================================== */
+
+.bib {
+  position: relative;
+  width: 100%;
+  height: var(--bib-altura);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  color: var(--bib-texto);
+  font-family: var(--bib-fonte-texto);
+  font-size: 14px;
+  background-color: var(--bib-fundo-cor);
+  background-image: var(--bib-fundo-imagem);
+  background-blend-mode: overlay;
+  background-size: cover;
+  background-position: center;
+  border-bottom: var(--bordaroxa, 1px solid #8b44c5);
+}
+/* Regras gerais com prioridade zero (:where), para qualquer classe sua vencer */
+:where(.bib) *, :where(.bib) *::before, :where(.bib) *::after { box-sizing: border-box; }
+.bib [hidden] { display: none !important; }
+:where(.bib) :where(button, input, select, textarea) { font: inherit; color: inherit; }
+
+.bib-carregando, .bib-deslogado { margin: auto; color: var(--bib-texto-suave); }
+
+/* =====================================================================
+   Barra superior
+   ===================================================================== */
+
+.bib-barra {
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: center;
+  gap: 12px;
+  padding: 14px 24px;
+  background: var(--bib-painel);
+  border-bottom: 1px solid var(--bib-linha);
+}
+.bib-barra__nome { font: 100 22px var(--bib-fonte-nome); color: var(--groupbody, var(--bib-texto)); }
+
+/* Abas dos andares */
+.bib-andares { display: flex; justify-content: center; gap: 24px; }
+.bib-andar {
+  padding: 4px 0;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  background: none;
+  color: var(--bib-texto-suave);
+  font-size: 13px;
+  cursor: pointer;
+}
+.bib-andar:hover { color: var(--bib-texto); }
+.bib-andar--atual { color: var(--bib-texto); border-bottom-color: var(--bib-destaque); }
+
+.bib-barra__direita { display: flex; justify-content: flex-end; align-items: center; gap: 22px; }
+
+/* Ícones: bilhetes, interações, mais */
+.bib-ferramentas { display: flex; align-items: center; gap: 14px; }
+.bib-ferramenta {
+  position: relative;
+  padding: 2px;
+  border: 0;
+  background: none;
+  color: var(--bib-texto-suave);
+  cursor: pointer;
+}
+.bib-ferramenta:hover { color: var(--bib-texto); }
+.bib-ferramenta svg { width: 18px; height: 18px; display: block; fill: none; stroke: currentColor; stroke-width: 1.5; }
+.bib-aviso {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background: var(--bib-perigo);
+  color: #fff;
+  font: 9px/16px var(--bib-fonte-numeros);
+  text-align: center;
+}
+
+/* Menu "mais" */
+.bib-mais { position: relative; }
+.bib-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: -6px;
+  z-index: 20;
+  min-width: 170px;
+  display: flex;
+  flex-direction: column;
+  padding: 6px 0;
+  background: var(--bib-caixa);
+  border: 1px solid var(--bib-borda);
+}
+.bib-menu__item { padding: 9px 16px; border: 0; background: none; text-align: left; cursor: pointer; }
+.bib-menu__item:hover { background: rgba(255, 255, 255, 0.06); }
+.bib-menu__aviso { margin-left: 6px; color: var(--bib-perigo); font: 10px var(--bib-fonte-numeros); }
+
+/* Cronômetro do dia */
+.bib-cronometro { text-align: right; line-height: 1.15; }
+.bib-cronometro__tempo { font: 24px var(--bib-fonte-nome); letter-spacing: 1px; color: var(--bib-dourado-claro); font-variant-numeric: tabular-nums; }
+.bib-cronometro__limite { font-size: 11px; color: var(--bib-texto-suave); }
+.bib-cronometro--estudando .bib-cronometro__tempo { text-shadow: 0 0 18px rgba(201, 168, 76, 0.45); }
+
+/* =====================================================================
+   Corpo: lateral + conteúdo do andar
+   ===================================================================== */
+
+.bib-corpo { flex: 1; min-height: 0; display: flex; }
+
+.bib-lateral {
+  width: var(--bib-largura-lateral);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--bib-espaco);
+  padding: var(--bib-espaco);
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.6);
+  border-right: 1px solid var(--bib-linha);
+}
+
+.bib-atributos { display: flex; flex-direction: column; gap: 12px; }
+.bib-atributo { display: flex; flex-direction: column; gap: 1px; padding-left: 10px; border-left: 3px solid var(--groupbody-75, #555); }
+.bib-atributo__rotulo { font-size: 10px; color: var(--bib-texto-suave); }
+.bib-atributo__valor { font: 18px var(--bib-fonte-titulo); }
+.bib-atributo__bonus { font: 10px var(--bib-fonte-numeros); color: var(--bib-dourado); }
+
+.bib-progresso { display: flex; flex-direction: column; gap: 6px; padding-top: 16px; border-top: 1px solid var(--bib-linha); }
+.bib-progresso__rotulo { font-size: 10px; color: var(--bib-texto-suave); }
+.bib-progresso__valor { font: 22px var(--bib-fonte-titulo); }
+.bib-progresso__barra { height: 3px; background: #333; }
+.bib-progresso__preenchimento { display: block; height: 100%; width: var(--bib-progresso, 0%); background: var(--bib-dourado); }
+.bib-progresso__marco { font: 10px var(--bib-fonte-numeros); color: var(--bib-texto-suave); }
+
+.bib-lendo { display: flex; flex-direction: column; gap: 4px; padding-top: 16px; border-top: 1px solid var(--bib-linha); }
+.bib-lendo__rotulo { font-size: 10px; color: var(--bib-texto-suave); }
+.bib-lendo__livro { font-size: 12px; color: gold; }
+.bib-lendo__livro--emprestado { color: var(--bib-texto-suave); }
+.bib-lendo__mesa { font-size: 11px; color: var(--bib-texto-suave); }
+.bib-lendo__bonus { font: 10px var(--bib-fonte-numeros); color: var(--bib-dourado); }
+
+.bib-conteudo { flex: 1; min-width: 0; position: relative; overflow-y: auto; }
+
+/* =====================================================================
+   Botões genéricos (cada um também tem a sua classe --nome)
+   ===================================================================== */
+
+.bib-btn {
+  padding: 9px 14px;
+  border: 1px solid var(--bib-borda);
+  background: transparent;
+  cursor: pointer;
+  font-size: 12px;
+}
+.bib-btn:hover:not(:disabled) { border-color: var(--bib-dourado-claro); }
+.bib-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.bib-btn--entrar,
+.bib-btn--confirmar-entrada,
+.bib-btn--confirmar { background: var(--bib-destaque); border-color: var(--bib-destaque); color: #f5f2ee; font-family: var(--bib-fonte-titulo); letter-spacing: 1px; }
+.bib-btn--sair { margin-top: auto; color: #d39aa6; border-color: #5a2f3a; }
+
+/* =====================================================================
+   Salão (andar 1)
+   ===================================================================== */
+
+.bib-salao { padding: var(--bib-espaco) 28px; }
+.bib-salao__cabecalho { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+.bib-salao__titulo { margin: 0; font: 400 15px var(--bib-fonte-titulo); letter-spacing: 2px; color: #b9adc6; }
+.bib-salao__contagem { font: 11px var(--bib-fonte-numeros); color: var(--bib-texto-suave); }
+.bib-salao__vazio { color: #666; font: 12px var(--bib-fonte-numeros); }
+
+.bib-entrada { display: flex; justify-content: center; padding: 18px 0 22px; }
+
+/* Lista de quem está estudando: uma linha por pessoa */
+.bib-lista { list-style: none; margin: 0; padding: 0; }
+.bib-pessoa {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 4px;
+  border-bottom: 1px solid var(--bib-linha);
+}
+.bib-pessoa--voce { background: rgba(139, 68, 197, 0.08); }
+.bib-pessoa__ponto { width: 8px; height: 8px; flex-shrink: 0; border-radius: 50%; background: var(--bib-mesa-cor, #888); }
+.bib-pessoa__info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.bib-pessoa__nome { font: 17px var(--bib-fonte-nome); color: var(--accent4, var(--bib-texto)); }
+.bib-pessoa__voce { font: 10px var(--bib-fonte-numeros); color: #a98fc9; }
+.bib-pessoa__detalhes { display: flex; flex-wrap: wrap; gap: 0 10px; font-size: 12px; color: var(--bib-texto-suave); }
+.bib-pessoa__livro { color: #bfb2a0; }
+.bib-pessoa__livro--emprestado { color: var(--bib-texto-suave); }
+.bib-pessoa__status { max-width: 220px; font-size: 12px; font-style: italic; color: #a59aae; overflow-wrap: anywhere; }
+.bib-pessoa__status-campo { width: 200px; padding: 5px 8px; border: 1px solid var(--bib-borda); background: rgba(0, 0, 0, 0.5); color: inherit; font: italic 12px var(--bib-fonte-texto); }
+.bib-pessoa__tempo { width: 64px; text-align: right; font: 13px var(--bib-fonte-numeros); color: var(--bib-dourado-claro); }
+.bib-pessoa__acoes { display: flex; gap: 4px; }
+
+.bib-interacao { padding: 5px 8px; border: 1px solid var(--bib-borda); background: transparent; font-size: 11px; cursor: pointer; }
+.bib-interacao:hover:not(:disabled) { border-color: var(--bib-dourado-claro); }
+.bib-interacao--usada { opacity: 0.35; cursor: not-allowed; }
+
+/* =====================================================================
+   Sessão restrita (andar 2)
+   ===================================================================== */
+
+.bib-restrita { padding: 40px; }
+.bib-restrita__grade { display: flex; flex-wrap: wrap; gap: 10px; }
+.bib-ritual { width: 130px; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 12px; border: 1px solid #2c2c2c; background: linear-gradient(0deg, black, transparent); }
+.bib-ritual__imagem { width: 32px; height: 32px; object-fit: cover; border-radius: 4px; }
+.bib-ritual__nome { font: 10px var(--bib-fonte-numeros); text-align: center; letter-spacing: 1px; }
+.bib-ritual__progresso { font: 10px var(--bib-fonte-numeros); color: #cbcbcb; }
+.bib-ritual__barra { width: 100%; height: 3px; background: #333; }
+.bib-ritual__preenchimento { display: block; height: 100%; width: var(--bib-progresso, 0%); background: var(--bib-dourado); }
+.bib-ritual__estado { font: 10px var(--bib-fonte-numeros); color: var(--bib-dourado); }
+.bib-ritual__estado--resgatado { color: var(--bib-sucesso); }
+
+/* =====================================================================
+   Andar inferior (andar 3)
+   ===================================================================== */
+
+.bib-inferior { height: 100%; }
+.bib-inferior__sala { position: relative; width: 100%; height: 100%; min-height: 400px; }
+.bib-icone {
+  position: absolute;
+  top: var(--bib-y);
+  left: var(--bib-x);
+  width: var(--bib-largura);
+  height: var(--bib-altura);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  opacity: 0.4;
+  transition: transform 0.2s, opacity 0.2s;
+}
+.bib-icone:hover:not(:disabled) { transform: scale(1.1); opacity: 1; }
+.bib-icone--usado { opacity: 0.2; cursor: default; }
+.bib-icone__imagem { width: 100%; height: 100%; object-fit: contain; }
+
+/* =====================================================================
+   Janelas (modais) — cada tipo tem a sua classe:
+   .bib-modal__caixa--entrada, --bilhetes, --enviar-bilhete, --interacoes,
+   --ranking, --historico, --marcos, --livros, --dupla, --convidar,
+   --mensagem, --inferior-nada, --inferior-achado
+   ===================================================================== */
+
+.bib-modal { position: absolute; inset: 0; z-index: 10; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.45); }
+.bib-modal__caixa {
+  position: relative;
+  width: min(60%, 640px);
+  max-height: 85%;
+  overflow-y: auto;
+  padding: 32px;
+  background: var(--bib-caixa);
+  border: 1px solid #8b44c554;
+}
+.bib-modal__fechar { position: absolute; top: 10px; right: 12px; width: 28px; height: 28px; border: 0; background: none; color: var(--bib-texto-suave); font-size: 20px; cursor: pointer; }
+.bib-modal__titulo { margin: 0 0 14px; font: 700 20px var(--bib-fonte-texto); color: var(--accent2, var(--bib-texto)); }
+.bib-mensagem { margin: 0; text-align: center; color: #bbb; }
+
+/* Confirmação (fica por cima de tudo) */
+.bib-confirmar { position: absolute; inset: 0; z-index: 30; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.55); }
+.bib-confirmar__caixa { width: min(90%, 420px); padding: 24px; background: var(--bib-caixa); border: 1px solid var(--bib-borda); }
+.bib-confirmar__texto { margin: 0 0 18px; line-height: 1.5; }
+.bib-confirmar__botoes { display: flex; justify-content: flex-end; gap: 8px; }
+
+/* Aviso rápido */
+.bib-toast { position: absolute; left: 50%; bottom: 18px; z-index: 40; transform: translateX(-50%); padding: 10px 16px; background: #1d1a20; border: 1px solid var(--bib-borda); font-size: 13px; }
+.bib-toast--erro { border-color: var(--bib-perigo); color: #f0b4bf; }
+
+/* Abas dentro das janelas (interações, ranking) */
+.bib-abas { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.bib-aba { padding: 5px 12px; border: 1px solid var(--bib-borda); background: none; font-size: 10px; cursor: pointer; }
+.bib-aba--atual { background: var(--bib-destaque); border-color: var(--bib-destaque); }
+
+/* ---------- Entrada ---------- */
+.bib-entrada-form { display: flex; flex-direction: column; gap: 18px; }
+.bib-entrada-form__mesas, .bib-entrada-form__horas { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; border: 0; }
+.bib-entrada-form__titulo { width: 100%; margin-bottom: 6px; padding: 0; font: 20px var(--bib-fonte-titulo); color: var(--accent2, var(--bib-texto)); }
+.bib-entrada-form__select { width: 100%; padding: 8px; border: 1px solid var(--bib-destaque); background: #000; color: #bebebe; }
+.bib-entrada-form__info { margin: 0; padding-top: 8px; border-top: 1px solid #333; font-size: 11px; color: #aaa; }
+.bib-opcao-mesa, .bib-opcao-hora { flex: 1; min-width: 110px; padding: 12px 10px; border: 1px solid var(--bib-borda); border-top: 3px solid var(--bib-mesa-cor, var(--bib-borda)); background: rgba(255, 255, 255, 0.03); cursor: pointer; }
+.bib-opcao-hora { border-top-width: 1px; }
+.bib-opcao-mesa__nome { display: block; font-size: 11px; font-weight: 700; }
+.bib-opcao-mesa__descricao { display: block; margin-top: 4px; font-size: 10px; color: #ccb95c; }
+.bib-opcao-mesa:disabled { opacity: 0.4; cursor: not-allowed; }
+.bib-selecionado { background: var(--bib-destaque); border-color: var(--bib-destaque); }
+
+/* ---------- Bilhetes ---------- */
+.bib-bilhetes__topo { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+.bib-bilhetes__contador { margin-right: auto; font: 11px var(--bib-fonte-numeros); color: var(--bib-texto-suave); }
+.bib-bilhetes__contador--cheia { color: var(--bib-perigo); }
+.bib-bilhetes__lista { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.bib-bilhete { position: relative; display: flex; flex-direction: column; gap: 6px; padding: 10px; border: 1px solid #323232; background: #0a0a0ad9; }
+.bib-bilhete--novo { border-left: 2px solid #c95d4c; }
+.bib-bilhete__cabecalho { display: flex; gap: 10px; align-items: baseline; padding-right: 26px; }
+.bib-bilhete__remetente { font: 14px var(--bib-fonte-titulo); }
+.bib-bilhete__data { font: 10px var(--bib-fonte-numeros); color: #d0d0d0; }
+.bib-bilhete__texto { font-size: 13px; color: #bbb; white-space: pre-wrap; overflow-wrap: anywhere; }
+.bib-bilhete__energia-ok { font: 10px var(--bib-fonte-numeros); color: var(--bib-sucesso); }
+.bib-bilhete__apagar { position: absolute; top: 4px; right: 4px; width: 24px; height: 24px; border: 1px solid var(--bib-linha); border-radius: 50%; background: #2c2c2c; cursor: pointer; }
+
+.bib-enviar__campo { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+.bib-enviar__rotulo { font-size: 11px; color: var(--bib-texto-suave); }
+.bib-enviar__destino, .bib-enviar__texto { width: 100%; padding: 8px; border: 1px solid var(--bib-borda); background: #000; color: #ccc; font: 13px var(--bib-fonte-texto); }
+.bib-enviar__texto { resize: vertical; }
+.bib-enviar__restantes, .bib-enviar__energia, .bib-enviar__energia-aviso { font: 11px var(--bib-fonte-numeros); color: #aaa; }
+.bib-enviar__energia { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; cursor: pointer; }
+
+/* ---------- Interações ---------- */
+.bib-interacoes__lista { list-style: none; margin: 0; padding: 0; }
+.bib-interacao-recebida, .bib-interacao-enviada { position: relative; display: flex; gap: 10px; align-items: center; padding: 8px 32px 8px 0; border-bottom: 1px solid #222; font: 11px var(--bib-fonte-numeros); }
+.bib-interacao-recebida--nova .bib-interacao-recebida__remetente { color: #fff; }
+.bib-interacao-recebida__remetente, .bib-interacao-enviada__nome { flex: 1; color: #ddd; }
+.bib-interacao-recebida__tipo, .bib-interacao-enviada__acoes { color: var(--bib-dourado); }
+.bib-interacao-recebida__data { font-size: 10px; color: #a9a9a9; }
+.bib-interacao-recebida__apagar { position: absolute; right: 0; width: 24px; height: 24px; border: 1px solid var(--bib-linha); border-radius: 50%; background: #793030; cursor: pointer; }
+
+/* ---------- Ranking e histórico ---------- */
+.bib-ranking__lista, .bib-historico__lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.bib-ranking__item, .bib-historico__item { display: flex; gap: 10px; align-items: center; padding: 6px; border: 1px solid #222; font: 12px var(--bib-fonte-numeros); }
+.bib-ranking__posicao { width: 20px; color: #666; }
+.bib-ranking__nome { flex: 1; }
+.bib-ranking__horas, .bib-historico__horas, .bib-historico__bonus { color: var(--bib-dourado); }
+.bib-historico__data { width: 80px; color: #a9a9a9; }
+.bib-historico__mesa, .bib-historico__livro { font-size: 10px; color: #ababab; }
+
+/* ---------- Marcos ---------- */
+.bib-marcos__total { font: 11px var(--bib-fonte-numeros); text-transform: uppercase; }
+.bib-marcos__lista { list-style: none; margin: 0; padding: 0; }
+.bib-marco { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; padding: 10px 0; border-bottom: 1px solid #222; }
+.bib-marco__horas { font: 16px var(--bib-fonte-titulo); }
+.bib-marco__recompensa { flex: 1; font: 11px var(--bib-fonte-numeros); color: #bbb; }
+.bib-marco__estado { font: 10px var(--bib-fonte-numeros); color: var(--bib-sucesso); }
+.bib-marco__barra { width: 100%; height: 3px; background: #333; }
+.bib-marco__preenchimento { display: block; height: 100%; width: var(--bib-progresso, 0%); background: var(--bib-dourado); }
+
+/* ---------- Livros ---------- */
+.bib-livros__lista { list-style: none; margin: 0; padding: 0; }
+.bib-livro { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 12px 0; border-bottom: 1px solid #222; }
+.bib-livro__nome { flex: 1 1 100%; font: 14px var(--bib-fonte-titulo); }
+.bib-livro__dias { font: 10px var(--bib-fonte-numeros); color: var(--bib-dourado); }
+.bib-livro__barra { flex: 1 1 100%; height: 3px; background: #333; }
+.bib-livro__preenchimento { display: block; height: 100%; width: var(--bib-progresso, 0%); background: var(--bib-dourado); }
+.bib-livro__maestria { flex: 1; padding: 6px; border: 1px solid var(--bib-destaque); background: #000; color: #bebebe; }
+.bib-livro__estado { font: 10px var(--bib-fonte-numeros); color: var(--bib-sucesso); }
+.bib-livro__aviso { font: 10px var(--bib-fonte-numeros); color: var(--bib-texto-suave); }
+
+/* ---------- Duplas ---------- */
+.bib-dupla__minha { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 6px; padding: 16px; margin-bottom: 14px; border: 1px solid #c9a; background: #1a0f1a; }
+.bib-dupla__nome { font: 15px var(--bib-fonte-titulo); }
+.bib-dupla__e { font-size: 11px; color: #888; }
+.bib-dupla__bonus { width: 100%; text-align: center; font: 10px var(--bib-fonte-numeros); color: var(--bib-dourado); }
+.bib-dupla__lista, .bib-convites, .bib-convidar__lista { list-style: none; margin: 0 0 12px; padding: 0; }
+.bib-dupla__item, .bib-convite, .bib-convidar__item { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid #222; }
+.bib-dupla__subtitulo { margin: 14px 0 6px; font-size: 13px; color: var(--bib-texto-suave); }
+.bib-convite__nome, .bib-convidar__nome { flex: 1; font: 14px var(--bib-fonte-titulo); }
+.bib-convite__estado { font: 10px var(--bib-fonte-numeros); color: #666; }
+.bib-convite__apagar { width: 24px; height: 24px; border: 1px solid var(--bib-linha); border-radius: 50%; background: #2c2c2c; cursor: pointer; }
+.bib-convidar__enviado { font: 10px var(--bib-fonte-numeros); color: var(--bib-sucesso); }
+
+/* ---------- Andar inferior: resultado ---------- */
+.bib-achado__imagem { display: block; width: 80px; height: 80px; margin: 12px auto; object-fit: contain; }
+.bib-achado__nome { text-align: center; font: 14px var(--bib-fonte-titulo); }
+.bib-achado__descricao { text-align: center; font: 11px var(--bib-fonte-numeros); color: #aaa; }
+
+/* =====================================================================
+   Telas estreitas
+   ===================================================================== */
+
+@media (max-width: 760px) {
+  .bib { height: auto; min-height: var(--bib-altura); }
+  .bib-barra { grid-template-columns: 1fr auto; }
+  .bib-andares { grid-column: 1 / -1; grid-row: 2; justify-content: flex-start; }
+  .bib-corpo { flex-direction: column; }
+  .bib-lateral { width: 100%; border-right: 0; border-bottom: 1px solid var(--bib-linha); }
+  .bib-pessoa { flex-wrap: wrap; }
+  .bib-modal__caixa { width: 94%; }
+  .bib-bilhetes__lista { grid-template-columns: minmax(0, 1fr); }
+}
