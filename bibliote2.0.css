@@ -182,8 +182,14 @@
 .bbbtn.bbentrar,
 .bbbtn.bbconfentrada,
 .bbbtn.bbconfirmar { background: var(--bbdestaque); border-color: var(--bbdestaque); color: #f5f2ee; font-family: var(--bbftitulo); letter-spacing: 1px; }
-.bbbtn.bbsair { margin-top: auto; color: #d39aa6; border-color: #5a2f3a; }
-.bbbilhete .bbbtn {width: max-content;text-align: center;margin-left: 35%;background: #68680066;border: 0;border-radius: 20px;color: #fff;text-transform: uppercase;font-size: 10px;}
+.bbbtn.bbsair {
+    margin-top: auto;
+    text-transform: uppercase;
+    color: #d39aa6;
+    border-color: #5a2f3a;
+    font-weight: 700;
+    font-family: 'Poppins';
+}.bbbilhete .bbbtn {width: max-content;text-align: center;margin-left: 35%;background: #68680066;border: 0;border-radius: 20px;color: #fff;text-transform: uppercase;font-size: 10px;}
 
 .bbatributo:before, .bbadet:before, .bbasab:before {content: "\eff4";font-family:"game-icons";position: absolute;transform: rotate(-20deg);font-size: 90px;opacity: .1;margin: 35px 0px 0 -15px;}
 
