@@ -1,0 +1,342 @@
+.raidebx {
+  max-width: 99%;
+  margin: 0 auto;
+  background-color: #373737;
+  background-image: url(https://2img.net/i.imgur.com/CC96sg8.png);
+  background-blend-mode: multiply;
+  background-size: auto;
+  padding: 20px;
+  color: #d8d8d8;
+  font-size: 14px;
+  box-sizing: border-box;
+  border: var(--bordaroxa1);
+}
+.raidebx * { box-sizing: border-box; }
+
+.raidetopo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  font-family: 'Poppins';
+  color: orange;
+}
+.raidetitulo {font-size: 25px;font-family: 'Mosca';display: flex;width: 64%;justify-content: flex-end;}
+.raidetitulo:before {
+  content: "\eb4b";
+  font-family: "game-icons";
+  margin: 0px 5px 0px 0px;
+}
+.raidetempo { text-align: right; }
+.raidetempotxt {display: block;font-size: 10px;text-transform: uppercase;color: #ffffff;letter-spacing: 1px;}
+.raidetempovalor {font-size: 15px;color: #ffffff;text-shadow: 0px 0px 15px #ffa500;}
+
+.raideboss {
+  padding: 14px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.raideimgbx {position: relative;width: 400px;height: 500px;display: flex;}
+.raideimg {display: block;width: 400px;height: 500px;object-fit: cover;}
+.raideselo {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-8deg);
+  padding: 8px 22px;
+  background: #000000;
+  color: orange;
+  border: 1px solid #8b1e1e;
+  outline: 1px solid var(--accent5);
+  outline-offset: 5px;
+  font-family: 'Mosca';
+  font-size: 30px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0px 0px 15px #ffa500;
+}
+.raideinfobx {
+  width: calc(100% - 410px);
+  padding: 20px;
+  box-sizing: border-box;
+}
+.raidenome {margin-top: 10px;width: 100%;color: orange;text-transform: uppercase;font-family: 'Mosca';text-align: center;font-size: 43px;}
+.raidelocal {font-size: 12px;width: 100%;text-align: center;text-transform: uppercase;font-family: 'Poppins';letter-spacing: 1px;}
+.raidebarra {
+  height: 8px;
+  margin: 15px 0 15px;
+  background: #311111;
+  outline: 1px solid var(--accent5);
+  outline-offset: 5px;
+}
+.raidevida {
+  height: 100%;
+  background: #8b1e1e;
+  transition: width 0.6s;
+}
+.raidehp {font-size: 13px;text-align: center;color: #0fff0f;font-family: 'against';font-weight: 700;}
+.raidehpatual {color: #fa5454;}
+.raidehpsep { margin: 0 2px; }
+.raidehptotal { }
+
+.raidedesc {
+  display: flex;
+  flex-wrap: wrap;
+  outline: 1px solid var(--accent5);
+  padding: 10px;
+  line-height: 2;
+  outline-offset: 5px;
+  text-align: justify;
+  margin: 20px 0 0 0;
+}
+.raidedesc info {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  line-height: normal;
+}
+.raidedesc info type {
+  background: var(--accent3);
+  flex: 1;
+  color: #fff;
+  text-align: center;
+  padding: 9px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.raidejogador {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding: 0px 15px;
+}
+.raidestat {
+  position: relative;
+  flex: 1;
+  padding: 15px 10px;
+  background: #000000;
+  overflow: hidden;
+  border: 1px solid #2c2c2c;
+}
+.raidestatnome {font-size: 12px;color: #b18b00;text-transform: uppercase;font-family: 'IBM Plex Mono';text-align: center;line-height: 2;}
+.raidestatvalor {font-size: 15px;color: #ffffff;font-family: 'against';text-align: center;}
+.raidestatvida { }
+.raidestatenergia { }
+.raidestatataques { }
+.raidestatvida::before,
+.raidestatenergia::before,
+.raidestatataques::before {
+  font-family: "game-icons";
+  font-size: 4rem;
+  position: absolute;
+  transform: rotate(-20deg);
+  margin: -10px 0 0 0;
+  opacity: .4;
+}
+.raidestatvida::before     { content: "\e740"; }
+.raidestatenergia::before  { content: "\e1f4"; }
+.raidestatataques::before  { content: "\e41b"; }
+
+.raideacao {
+  display: flex;
+  gap: 10px;
+  margin: 0 15px 12px;
+  padding: 15px;
+  background: #000000;
+  border: 1px solid #2c2c2c;
+}
+.raideselect {
+  flex: 1;
+  padding: 10px 12px;
+  background: #000000;
+  color: #ffffff;
+  border: 1px solid var(--accent5);
+  outline-offset: 3px;
+  font-family: 'Poppins';
+  font-size: 12px;
+  letter-spacing: .5px;
+  cursor: pointer;
+}
+.raideselect option { background: #000000; color: #ffffff; }
+.raidebtn {
+  padding: 8px 26px;
+  background: #311111;
+  color: orange;
+  border: 0;
+  font-family: 'Mosca';
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: .3s;
+}
+.raidebtn:before {
+  content: "\e1db";
+  font-family: "game-icons";
+  margin-right: 6px;
+}
+.raidebtn:hover { background: #8b1e1e; color: #ffffff; text-shadow: 0px 0px 15px #ffa500; }
+.raidebtn:disabled { background: #1a1a1a; color: #555555; border-color: #2c2c2c; text-shadow: none; cursor: not-allowed; }
+
+.raideresultado {
+  margin: 0 15px 12px;
+  padding: 12px 15px;
+  text-align: center;
+  background: #0000005e;
+  border: 1px solid #2c2c2c;
+  font-family: 'Poppins';
+  font-size: 13px;
+  line-height: 2;
+}
+.raideresdano { color: #ffffff; }
+.raiderescontra { color: #aaaaaa; }
+.raideresdano:before,
+.raiderescontra:before {
+  font-family: "game-icons";
+  font-size: 16px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.raideresdano:before   { content: "\e465"; color: orange; }
+.raiderescontra:before { content: "\e250"; color: #fa5454; }
+.raideresultado b { font-family: 'against'; font-weight: 700; }
+.raideresdano b { color: orange; }
+.raiderescontra b { color: #fa5454; }
+
+.raideaviso {
+  margin: 0 15px 12px;
+  padding: 10px 15px;
+  background: #000000;
+  border: 1px solid #690000;
+  color: #ff3f3f;
+  font-family: 'IBM Plex Mono';
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+}
+.raideaviso:before {
+  content: "\e7a7";
+  font-family: "game-icons";
+  margin-right: 8px;
+}
+
+.raidecolunas {
+  display: flex;
+  gap: 10px;
+  padding: 0 15px;
+}
+.raidelog,
+.raiderank {
+  position: relative;
+  flex: 1;
+  padding: 15px;
+  background: #00000082;
+  border: 1px solid #2c2c2c;
+  overflow: hidden;
+}
+.raidelog::after,
+.raiderank::after {
+  font-family: "game-icons";
+  font-size: 9rem;
+  position: absolute;
+  right: -20px;
+  bottom: -30px;
+  transform: rotate(-20deg);
+  opacity: .07;
+  pointer-events: none;
+}
+.raidelog::after  { content: "\e37d"; }
+.raiderank::after { content: "\e427"; }
+
+.raidesubtit {
+  margin-bottom: 12px;
+  color: orange;
+  font-family: 'Mosca';
+  font-size: 22px;
+  text-align: center;
+  text-transform: uppercase;
+}
+.raidesubtit:before {
+  font-family: "game-icons";
+  font-size: 18px;
+  margin-right: 6px;
+}
+.raidelog .raidesubtit:before  { content: "\e41b"; }
+.raiderank .raidesubtit:before { content: "\e424"; }
+
+.raidelista { position: relative; z-index: 1; }
+.raidelinha {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px dashed #2a2a2a;
+  font-family: 'Poppins';
+  font-size: 12px;
+}
+.raidelinha:last-child { border-bottom: none; }
+.raidequem { flex: 1; color: #ffffff; }
+.raidecomo {
+  color: var(--accent4);
+  font-family: 'IBM Plex Mono';
+  font-size: 11px;
+  text-transform: uppercase;
+}
+.raidedano { color: #fa5454; font-family: 'against'; font-weight: 700; }
+
+.raidepos {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #2c2c2c;
+  color: #888888;
+  font-family: 'against';
+  font-size: 12px;
+}
+.raiderank .raidelinha:nth-child(-n+3) .raidepos { font-size: 0; }
+.raiderank .raidelinha:nth-child(-n+3) .raidepos:before {
+  font-family: "game-icons";
+  font-size: 16px;
+}
+.raiderank .raidelinha:nth-child(1) .raidepos:before { content: "\e424"; color: #ffd700; }
+.raiderank .raidelinha:nth-child(2) .raidepos:before { content: "\e874"; color: #c0c0c0; }
+.raiderank .raidelinha:nth-child(3) .raidepos:before { content: "\e93a"; color: #cd7f32; }
+.raiderank .raidelinha:nth-child(1) .raidequem { color: orange; text-shadow: 0px 0px 15px #ffa500; }
+
+.raideorigem {
+  display: block;
+  margin-top: 2px;
+  color: var(--accent4);
+  font-family: 'IBM Plex Mono';
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  text-shadow: none;
+}
+.raideespecie { }
+.raideespecie:after { content: " · "; color: #555555; }
+.raidesangue { }
+
+.raidefim .raideimg { filter: grayscale(100%); }
+.raidefim .raideselo { display: block; }
+.raidefim .raidebtn,
+.raidefim .raideselect { pointer-events: none; opacity: 0.4; }
+
+.raidebx[data-boss="trasgo"] { }
+.raidebx[data-boss="dementador"] { }
+
+@media (max-width: 520px) {
+  .raidejogador,
+  .raideacao,
+  .raidecolunas { flex-direction: column; }
+  .raideimgbx,
+  .raideimg,
+  .raideinfobx { width: 100%; }
+   }
